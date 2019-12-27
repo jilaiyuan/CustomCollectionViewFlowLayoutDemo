@@ -15,6 +15,7 @@
 		4C69EDC523B609BC001FF4B6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C69EDC423B609BC001FF4B6 /* main.m */; };
 		4C69EDCD23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C69EDCC23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.m */; };
 		4C69EDCF23B60BD3001FF4B6 /* lennart_heim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4C69EDCE23B60BD3001FF4B6 /* lennart_heim.jpg */; };
+		4C69EDD223B61652001FF4B6 /* CustomCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C69EDD123B61652001FF4B6 /* CustomCollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		4C69EDCB23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		4C69EDCC23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		4C69EDCE23B60BD3001FF4B6 /* lennart_heim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lennart_heim.jpg; sourceTree = "<group>"; };
+		4C69EDD023B61652001FF4B6 /* CustomCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomCollectionViewCell.h; sourceTree = "<group>"; };
+		4C69EDD123B61652001FF4B6 /* CustomCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomCollectionViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				4C69EDB623B609B9001FF4B6 /* AppDelegate.m */,
 				4C69EDB823B609B9001FF4B6 /* ViewController.h */,
 				4C69EDB923B609B9001FF4B6 /* ViewController.m */,
+				4C69EDD023B61652001FF4B6 /* CustomCollectionViewCell.h */,
+				4C69EDD123B61652001FF4B6 /* CustomCollectionViewCell.m */,
 				4C69EDCB23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.h */,
 				4C69EDCC23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.m */,
 				4C69EDCE23B60BD3001FF4B6 /* lennart_heim.jpg */,
@@ -154,6 +159,7 @@
 				4C69EDC523B609BC001FF4B6 /* main.m in Sources */,
 				4C69EDCD23B60A4F001FF4B6 /* CustomCollectionViewFlowLayout.m in Sources */,
 				4C69EDB723B609B9001FF4B6 /* AppDelegate.m in Sources */,
+				4C69EDD223B61652001FF4B6 /* CustomCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
