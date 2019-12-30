@@ -13,14 +13,13 @@
 @property (nonatomic, retain) UIImageView *imageView;
 @property (nonatomic, retain) UILabel *countLabel;
 
-
 @end
 
 @implementation CustomCollectionViewCell
 
-- (instancetype)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
         [self initSubviews];
     }
@@ -39,8 +38,8 @@
     UILabel *countLabel = [[UILabel alloc] init];
     countLabel.font = [UIFont boldSystemFontOfSize:14];
     countLabel.textColor = UIColor.redColor;
-    countLabel.textAlignment = NSTextAlignmentCenter;
-    countLabel.frame = CGRectMake(0, 0, 20, 20);
+    countLabel.textAlignment = NSTextAlignmentLeft;
+    countLabel.frame = CGRectMake(0, 0, 100, 20);
     countLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self.contentView addSubview:countLabel];
     self.countLabel = countLabel;
@@ -52,10 +51,9 @@
     self.countLabel.text = [NSString stringWithFormat:@"%lu",count];
 }
 
-- (void)prepareForReuse
+- (void)setImage
 {
-    self.imageView.image = nil;
-    self.countLabel.text = nil;
+    self.imageView.image = [UIImage imageNamed:@"lennart_heim.jpg"];
 }
 
 - (void)dealloc

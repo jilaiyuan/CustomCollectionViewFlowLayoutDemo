@@ -17,11 +17,6 @@
 {
     self = [super init];
     if (self) {
-        // initial property
-        self.columnCount = 1;
-        self.rowCount = 1;
-        self.shouldKeepAspectRatio = NO;
-        self.aspectRatio = 1.f / 2.f;
     }
     return self;
 }
@@ -47,52 +42,66 @@
 - (CGSize)collectionViewContentSize
 {
     NSInteger itemTotalCount = [self.collectionView numberOfItemsInSection:0];
-    NSInteger itemCountInPage = self.rowCount * self.columnCount;
-    NSInteger remainder = itemTotalCount % itemCountInPage;
-    NSInteger pageNumber = itemTotalCount / itemCountInPage;
-    if (itemTotalCount <= itemCountInPage)
-    {
-        pageNumber = 1;
-    }
-    else
-    {
-        if (remainder == 0)
-        {
-            pageNumber = pageNumber;
-        }
-        else
-        {
-            pageNumber = pageNumber + 1;
-        }
-    }
-    
     BOOL scrollHorizontal = (self.scrollDirection == UICollectionViewScrollDirectionHorizontal);
-    CGFloat width = pageNumber * (scrollHorizontal ? self.collectionView.bounds.size.width : self.collectionView.bounds.size.height);
-    
-    if (scrollHorizontal)
-        return CGSizeMake(width, 150);
+    BOOL pageEnabled = self.collectionView.pagingEnabled;
+    NSInteger totalUnits = 0;//pageEnabled = YES: page; pageEnabled = NO : row.
+    NSInteger itemPreUnit = 0;//item in one row(pageEnabled = NO) or one page(pageEnabled = YES).
+    if (pageEnabled)
+        itemPreUnit = self.columnCount * self.rowCount;
     else
-        return CGSizeMake(150, width);
+        itemPreUnit = scrollHorizontal ? self.rowCount : self.columnCount;
+    
+    totalUnits = itemTotalCount / itemPreUnit;
+    if (itemTotalCount % itemPreUnit != 0)
+        totalUnits += 1;
+
+    CGSize itemSize = self.itemSize;
+    if (scrollHorizontal)
+    {
+        CGFloat width = 0.f;
+        if (pageEnabled)
+            width = CGRectGetWidth(self.collectionView.bounds) * totalUnits;
+        else
+            width = self.sectionInset.left + totalUnits * itemSize.width + (totalUnits - 1) * self.minimumInteritemSpacing + self.sectionInset.right;
+        return CGSizeMake(width, 150);
+    }
+    else
+    {
+        CGFloat height = 0.f;
+        if (pageEnabled)
+            height = CGRectGetHeight(self.collectionView.bounds) * totalUnits;
+        else
+            height = self.sectionInset.top + totalUnits * itemSize.height + (totalUnits - 1) * self.minimumLineSpacing + self.sectionInset.bottom;
+        return CGSizeMake(150, height);
+    }
 }
 
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize itemSize = [self getItemSize];
-    
-    NSInteger item = indexPath.item;
-    NSInteger pageNumber = item / (self.rowCount * self.columnCount);
-    
-    NSInteger x = (item % self.columnCount + pageNumber * self.columnCount) % self.columnCount;
-    NSInteger y = (item / self.columnCount - pageNumber * self.rowCount) % self.rowCount;
-    
     BOOL scrollHorizontal = (self.scrollDirection == UICollectionViewScrollDirectionHorizontal);
+    BOOL pageEnabled = self.collectionView.pagingEnabled;
+    NSInteger item = indexPath.item;
     
-    CGFloat itemX = (scrollHorizontal ? pageNumber * self.collectionView.bounds.size.width : 0)  + self.sectionInset.left + (itemSize.width + self.minimumInteritemSpacing) * x;
+    NSInteger pageNumber = pageEnabled ? item / (self.rowCount * self.columnCount) : 0;
     
-    CGFloat itemY = (scrollHorizontal ? 0 : pageNumber * self.collectionView.bounds.size.height)  + self.sectionInset.top + (itemSize.height + self.minimumLineSpacing) * y;
+    NSInteger x = item % (scrollHorizontal ? self.rowCount : self.columnCount);
+    NSInteger y = item / (scrollHorizontal ? self.rowCount : self.columnCount);
+    if (pageEnabled)
+    {
+        y %= (scrollHorizontal ? self.columnCount : self.rowCount);
+    }
+    if (scrollHorizontal)
+    {
+        NSInteger temp = x;
+        x = y;
+        y = temp;
+    }
     
+    CGFloat itemX = (scrollHorizontal ? pageNumber * self.collectionView.bounds.size.width :0) + self.sectionInset.left + (self.itemSize.width + self.minimumInteritemSpacing) * x;
+    CGFloat itemY = (scrollHorizontal ? 0 : pageNumber * self.collectionView.bounds.size.height) + self.sectionInset.top + (self.itemSize.height + self.minimumLineSpacing) * y;
+
     UICollectionViewLayoutAttributes *attributes = [super layoutAttributesForItemAtIndexPath:indexPath];
-    attributes.frame = CGRectMake(itemX, itemY, itemSize.width, itemSize.height);
+    attributes.frame = CGRectMake(itemX, itemY, self.itemSize.width, self.itemSize.height);
     
     return attributes;
 }
@@ -100,17 +109,6 @@
 - (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     return self.attributesArrayM;
-}
-
-- (CGSize)getItemSize
-{
-    CGFloat itemWidth = (self.collectionView.frame.size.width - self.sectionInset.left - self.sectionInset.right - (self.columnCount - 1)  * self.minimumInteritemSpacing) / self.columnCount;
-    CGFloat itemHeight = (self.collectionView.frame.size.height - self.sectionInset.top - self.sectionInset.bottom - (self.rowCount - 1) * self.minimumLineSpacing) / self.rowCount;
-    
-    if (self.shouldKeepAspectRatio)
-        itemHeight = itemWidth / self.aspectRatio;
-    
-    return CGSizeMake(itemWidth, itemHeight);
 }
 
 - (NSMutableArray *)attributesArrayM

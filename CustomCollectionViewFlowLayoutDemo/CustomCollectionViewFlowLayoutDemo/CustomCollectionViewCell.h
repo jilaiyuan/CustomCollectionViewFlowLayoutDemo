@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CustomCollectionViewCell : UICollectionViewCell
 
 - (void)setCount:(NSUInteger)count;
+- (void)setImage;
 
 @end
 
